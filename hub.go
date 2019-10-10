@@ -1,45 +1,27 @@
 package main
 
 type Message struct {
-  data []byte
-  uuid string
+    data []byte
+    uuid string
 }
 
 type Subscription struct {
-  conn *Connection
-  uuid string
+    conn *Connection
+    uuid string
 }
 
 type Hub struct {
-  broadcast chan Message
-  register chan Subscription
-  unregister chan Subscription
-  uuids map[string]map[*Connection]bool
+    broadcast chan Message
+    register chan Subscription
+    unregister chan Subscription
+    uuids map[string]map[*Connection]bool
 }
 
-// func newHub() *Hub {
-// 	return &Hub{
-// 		broadcast:  make(chan []byte),
-// 		register:   make(chan *Subscription),
-// 		unregister: make(chan *Subscription),
-// 		uuids:    make(map[*Client]bool),
-// 	}
-// }
-
-// func newHub() *Hub {
-// 	return &Hub{
-//     broadcast:  make(chan Message),
-//     register:   make(chan Subscription),
-//     unregister: make(chan Subscription),
-//     uuids:      make(map[string]map[*Connection]bool),
-// 	}
-// }
-
 var h = Hub{
-  broadcast:  make(chan Message),
-  register:   make(chan Subscription),
-  unregister: make(chan Subscription),
-  uuids:      make(map[string]map[*Connection]bool),
+    broadcast:  make(chan Message),
+    register:   make(chan Subscription),
+    unregister: make(chan Subscription),
+    uuids:      make(map[string]map[*Connection]bool),
 }
 
 func (h *Hub) run() {
