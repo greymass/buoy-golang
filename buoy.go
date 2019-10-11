@@ -1,7 +1,6 @@
 package main
 
 import (
-    "encoding/json"
     "flag"
     "io/ioutil"
     "log"
@@ -14,14 +13,6 @@ import (
 )
 
 var addr = flag.String("addr", "localhost:8080", "http service address")
-
-type JsonFormat struct {
-    A string `json:"a"`
-    Bn int `json:"bn"`
-    Sig string `json:"sig"`
-    T *json.RawMessage `json:"t"`
-    Tx string `json:"tx"`
-}
 
 type Connection struct {
     ws *websocket.Conn
@@ -110,36 +101,20 @@ func readPost(w http.ResponseWriter, r *http.Request) (body []byte) {
     return body
 }
 
-func readJson(w http.ResponseWriter, body []byte) (data JsonFormat) {
-    err := json.Unmarshal(body, &data)
-    if err != nil {
-        http.Error(w, err.Error(), 500)
-        return
-    }
-    return data
-}
-
 func handlePost(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
     // Ensure validity of UUID
     if validUUID(vars["uuid"]) {
         // Read the POST body
         body := readPost(w, r)
-        // Convert it to the `JsonFormat` struct
-        data := readJson(w, body)
-        // Convert back to JSON to cleanse
-        jsonString, jsonErr := json.Marshal(data)
-        if jsonErr == nil {
-            // Find connections matching the UUID
-            connections := h.uuids[vars["uuid"]]
-            if connections != nil {
-                // Send the message along to any matching channels
-                for c := range connections {
-                    c.send <- []byte(jsonString)
-                }
-            } else {
-                // No matching UUID channels
+        connections := h.uuids[vars["uuid"]]
+        if connections != nil {
+            // Send the message along to any matching channels
+            for c := range connections {
+                c.send <- body
             }
+        } else {
+            // No matching UUID channels
         }
     } else {
         // Invalid UUID submitted to
