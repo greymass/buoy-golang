@@ -1,0 +1,9 @@
+version: '3'
+services:
+  feeds:
+    build: .
+    restart: on-failure
+    environment:
+      ADDR: 0.0.0.0:8080
+    ports:
+      - "8080:8080"
