@@ -1,7 +1,6 @@
 package main
 
 import (
-    "flag"
     "io/ioutil"
     "log"
     "net/http"
@@ -9,6 +8,7 @@ import (
     "github.com/google/uuid"
     "github.com/gorilla/mux"
     "github.com/gorilla/websocket"
+    "github.com/namsral/flag"
     // "github.com/davecgh/go-spew/spew"
 )
 
@@ -156,6 +156,6 @@ func main() {
 
     http.Handle("/", rtr)
 
-    log.Println("Listening...")
+    log.Printf("Listening on %s", *addr)
     log.Fatal(http.ListenAndServe(*addr, nil))
 }
