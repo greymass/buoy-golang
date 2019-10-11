@@ -16,8 +16,10 @@ import (
 var addr = flag.String("addr", "localhost:8080", "http service address")
 
 type JsonFormat struct {
+    A string `json:"a"`
     Bn int `json:"bn"`
     Sig string `json:"sig"`
+    T *json.RawMessage `json:"t"`
     Tx string `json:"tx"`
 }
 
