@@ -1,3 +1,10 @@
+NOT PRODUCTION READY
+---
+
+The golang version of Buoy has lagged behind in functionality compared to that of the nodejs version. It is recommended for the time being that the nodejs version is used until development can continue on this version.
+
+https://github.com/greymass/buoy-nodejs
+
 buoy
 ====
 
